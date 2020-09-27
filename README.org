@@ -83,9 +83,9 @@ macro directly, called =callEval= (possibly name change incoming...):
 #+begin_src nim
 doAssert callEval(`+`, 4.5, 10.5).to(float) == 15.0
 #+end_src
-This also showcases that functions taking multiple argumenst work as
+This also showcases that functions taking multiple arguments work as
 expected. At the moment we're limited to 6 arguments (there's specific
-C functions to define construct calls up to 6 arguments. Need to
+C functions to construct calls up to 6 arguments. Need to
 implement arbitrary numbers manually).
 
 Also named arguments are supported. Let's use the =seq= function as an
