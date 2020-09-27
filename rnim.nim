@@ -3,7 +3,25 @@ export RInternals, Rembedded, Rinternals_types, Rext
 import macros
 
 type
-  RContext* = object
+  RContextObj = object
+    replSetup: bool
+  RContext* = ref RcontextObj
+
+
+when defined(gcDestructors):
+  proc teardown*(ctx: var RContextObj)
+  proc `=destroy`(x: var RContextObj) =
+    ## tear down the R repl, if it's up
+    if x.replSetup:
+      teardown(x)
+else:
+  proc teardown*(ctx: RContext)
+  proc finalize(x: RContext) =
+    ## tear down the R repl, if it's up
+    ## As far as I understand there's no guarantee that this finalizer will be
+    ## called in due time. Probably better to manually tear down R?
+    if x.replSetup:
+      teardown(x)
 
 proc traverseTree(input: NimNode): NimNode =
   # iterate children
@@ -223,13 +241,30 @@ proc setupR*(): RContext =
   const r_argc = 2;
   let r_argv = ["R".cstring, "--silent".cstring]
   discard Rf_initEmbeddedR(r_argc, r_argv[0].unsafeaddr)
-  # NOTE: don't have to assign RContext. It is only a dummy object
+  when defined(gcDestructors):
+    result = new RContext
+  else:
+    new(result, finalize)
+  result.replSetup = true
 
-proc teardownR*() =
-  # release add1_call and arg
+template tdBody(): untyped {.dirty.} =
+  # TODO: this does not seem to have any effect? Setting up a new
+  # R repl will print that a repl is running already.
   Rf_endEmbeddedR(0)
+  ctx.replSetup = false
+
+## Note: we separate the two teardown procs for the simple reason that
+## if we combine them we run into a weird issue where the resulting
+## generic won't accept the `ctx.replSetup` assignment for the `gcDestructors`
+## case.
+when defined(gcDestructors):
+  proc teardown*(ctx: var RContextObj) =
+    tdBody()
+else:
+  proc teardown*(ctx: RContext) =
+    tdBody()
 
 template withR*(body: untyped): untyped =
   let R {.inject.} = setupR()
   body
-  Rf_endEmbeddedR(0)
+  R.teardown()

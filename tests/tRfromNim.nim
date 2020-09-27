@@ -59,5 +59,3 @@ suite "R stdlib function calls":
 suite "R function with … arguments":
   test "Named param after …":
     check R.dotFn(param = "It got back!").to(string) == "It got back!"
-
-teardownR()
