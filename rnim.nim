@@ -166,11 +166,11 @@ template eval*(s: SEXP): untyped =
   ret
 
 macro callEval*(fn: untyped, args: varargs[untyped]): untyped =
+  let unprotectLen = args.len + 1
   result = quote do:
     let fnCall = call(`fn`, `args`)
     let ret = eval(fnCall)
-    # TODO: make macro so we know how many args there are
-    UNPROTECT(2) # fn, args
+    UNPROTECT(`unprotectLen`) # fn, args
     ret
 
 #template `()`(fn untyped, args: varargs[untyped]): untyped =
