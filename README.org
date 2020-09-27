@@ -1,0 +1,43 @@
+* rnim - A bridge between R ⇔ Nim
+
+Currently this is a barely working prototype. 
+
+Calling R functions from Nim works reasonably well, if basic Nim types
+are used. Both named and unnamed function arguments are supported.
+
+The R =SEXP= object can be converted into all Nim types, which are
+supported in the other direction.
+
+The interfacing from R to Nim is essentially broken still. Segfaults,
+many of them... :)
+
+
+** Trying it out
+
+To try out the functionality of calling R from Nim, you need to meet a
+few prerequsites:
+- a working R installation _with_ a =libR.so= shared library
+- the shell environment variable =R_HOME= needs to be defined and has
+  to point to the directory which contains the full R directory
+  structure. That is /not/ the path where the R binary lies! 
+  Finally, the =libR.so= has to be findable for dynamic loading. On my
+  machine the path of it by default isn't added to =ld= via
+  =/etc/ld.so.conf.d= (for the time being I just define =LD_LIBRARY_PATH=
+  Setup on my machine:
+  #+begin_src sh
+  which R
+  echo $R_HOME
+  echo $LD_LIBRARY_PATH
+  #+end_src
+
+  #+RESULTS:
+  : /usr/bin/R
+  : /usr/lib/R
+  : /usr/lib/R/lib
+
+Then just run the test file:
+#+begin_src sh
+nim c -r tests/tRfromNim.nim
+#+end_src
+
+
