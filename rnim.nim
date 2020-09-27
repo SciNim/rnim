@@ -142,7 +142,7 @@ macro call*(fn: untyped, args: varargs[untyped]): untyped =
       callNode.add nnkCall.newTree(ident"nimToR", arg)
     of nnkExprEqExpr:
       callNode.add nnkCall.newTree(ident"nimToR", arg[1])
-      tagsToAdd.add((idx, arg[0].toStrLit)) #nnkCall.newTree(ident"namedParam", arg[0].toStrLit, arg[1])
+      tagsToAdd.add((idx, arg[0].toStrLit))
     else: doAssert false, "Unsupported node kind " & $arg.kind & " of val " & $(arg.repr)
     inc idx
   var tagsSet = newStmtList()
