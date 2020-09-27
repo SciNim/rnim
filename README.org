@@ -11,6 +11,108 @@ supported in the other direction.
 The interfacing from R to Nim is essentially broken still. Segfaults,
 many of them... :)
 
+** Basic syntax to call R from Nim
+
+Intefacing with R from Nim works by making use of the =Rembedded.h=
+functionality, which effectively launches a silent, embedded R repl.
+
+This repl is then fed with S expressions to be evaluated. The S
+expression is the basic data type on the C side of R. Essentially
+everything is mapped to different kinds of S expressions, be it symbols,
+functions, simple data types, vectors etc.
+
+This library aims to hide both the data conversions and memory
+handling from the user.
+
+This means that typically one sets up the R repl, does some calls to R
+and finally shuts down the R repl again:
+#+begin_src nim
+let R = setupR()
+# some or many calls to R functions
+teardown(R)
+#+end_src
+
+The returned =R= object is essentially just a dummy object, which is
+used to help with overload resolution (we want =untyped= templates to
+allow calling and R function by ident without having to manually wrap
+them) and it keeps track of the state of the repl. 
+
+In order to not have to call the =teardown= procedure manually, there
+are two options: 
+- a =withR= template, which takes a block of code and injects a
+  variable =R= into its calling scope. The repl will be shut down when
+  leaving its scope
+- by compiling with =--gc:arc= or =--gc:orc=. In that case we can
+  define a proper destructor, which will be automatically called when
+  the =R= variable runs out of scope and is destroyed.
+
+Note two things:
+1. in principle there is a finalizer defined for the non ARC / ORC
+   case, which performs the same duty. However, at least according to
+   my understanding, it's run whenever the GC decides to collect the
+   =R= variable. This might not be very convenient.
+2. I don't know whether it's an inherent limitation of the embedded R
+   repl, but it seems like one cannot destroy an R repl and construct
+   a new one. If one tries, one is greeted by
+#+begin_src sh
+   R is already initialized
+#+end_src
+message.
+
+*** Simple usage example
+
+The above out of the way, let's look at the basic things currently
+possible.
+
+For clarity I will annotate the types even where not required.
+
+#+begin_src nim
+import rnim
+let R = setupR()
+# perform a call to the R stdlib function `sum`, by using 
+# the `.()` dot call template and handing a normal Nim seq
+let res: SEXP = R.sum(@[1, 2, 3])
+# the result is a `SEXP`, the basic R data type. We can now
+# use the `to` proc to get a Nim type from it:
+doAssert res.to(int) == 6
+#+end_src
+
+Some functions, which have atypical names may not be possible to call
+via the dot call template. In that case, we can call the underlying
+macro directly, called =callEval= (possibly name change incoming...):
+#+begin_src nim
+doAssert callEval(`+`, 4.5, 10.5).to(float) == 15.0
+#+end_src
+This also showcases that functions taking multiple argumenst work as
+expected. At the moment we're limited to 6 arguments (there's specific
+C functions to define construct calls up to 6 arguments. Need to
+implement arbitrary numbers manually).
+
+Also named arguments are supported. Let's use the =seq= function as an
+example, the more general version of the =:= operator in R
+(e.g. =1:5=):
+#+begin_src nim
+check R.seq(1, 10, by = 2).to(seq[int]) == toSeq(countup(1, 10, 2))
+#+end_src
+As we can see, we can also convert =SEXPs= containing vectors back to
+Nim sequences.
+
+Finally, we can also source from arbitrary R files. Assuming we have
+some R file =foo.R=:
+#+begin_src R
+hello <- function(name) {
+  return(paste(c("Hello", name), sep = " ", collapse = " "))
+}
+#+end_src
+From Nim we can then call it via:
+#+begin_src nim
+# first source the file
+source("foo.R")
+doAssert R.hello("User").to(string) == "Hello User"
+#+end_src
+
+That covers the most basic functionality in place so far.
+
 
 ** Trying it out
 
