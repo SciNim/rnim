@@ -56,7 +56,7 @@ suite "R stdlib function calls":
   test "Calls with named arguments":
     check R.seq(1, 10, by = 1).to(seq[int]) == toSeq(1 .. 10)
 
-suite "R function will …":
+suite "R function with … arguments":
   test "Named param after …":
     check R.dotFn(param = "It got back!").to(string) == "It got back!"
 
