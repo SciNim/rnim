@@ -55,6 +55,7 @@ suite "R stdlib function calls":
     check callEval(`+`, 5, 10).to(int) == 15
   test "Calls with named arguments":
     check R.seq(1, 10, by = 1).to(seq[int]) == toSeq(1 .. 10)
+    check R.seq(1, 10, by = 2).to(seq[int]) == toSeq(countup(1, 10, 2))
 
 suite "R function with … arguments":
   test "Named param after …":
