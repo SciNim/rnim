@@ -236,6 +236,39 @@ proc to*[T](s: SEXP, dtype: typedesc[T]): T =
 template `.()`*(ctx: RContext, fn: untyped, args: varargs[untyped]): untyped =
   callEval(fn, args)
 
+proc toFnName(n: NimNode): NimNode =
+  case n.kind
+  of nnkIdent, nnkSym: result = n
+  of nnkDotExpr: result = n.toStrLit
+  else: doAssert false, "Invalid kind " & $n.kind & " for a function name!"
+
+proc makeValidRCall(n: NimNode, toDiscard: bool): NimNode =
+  case n.kind
+  of nnkAsgn:
+    result = n
+    # make sure child [1] is handled correctly
+    result[1] = makeValidRCall(n[1], toDiscard = false)
+  of nnkLetSection, nnkVarSection:
+    result = n
+    # handle the [2] child node of the identDef
+    expectKind(n[0], nnkIdentDefs)
+    result[0][2] = makeValidRCall(n[0][2], toDiscard = false)
+  of nnkCall:
+    let fnName = toFnName(n[0])
+    var newCall = nnkCall.newTree(ident"callEval", fnName)
+    for i in 1 ..< n.len:
+      newCall.add n[i]
+    result = if toDiscard: nnkDiscardStmt.newTree(newCall) else: newCall
+  else:
+    doAssert false, "Unsupported node kind " & $n.kind & " in `Rctx` macro!"
+
+macro Rctx*(body: untyped): untyped =
+  expectKind(body, nnkStmtList)
+  # construct correct R calls from each statement in the body
+  result = newStmtList()
+  for arg in body:
+    result.add makeValidRCall(arg, true)
+
 proc setupR*(): RContext =
   const r_argc = 2;
   let r_argv = ["R".cstring, "--silent".cstring]
