@@ -1,4 +1,4 @@
-import sequtils
+import sequtils, strutils
 import ../src/rnim
 import unittest
 
@@ -60,3 +60,31 @@ suite "R stdlib function calls":
 suite "R function with … arguments":
   test "Named param after …":
     check R.dotFn(param = "It got back!").to(string) == "It got back!"
+
+suite "Unusual R function names":
+  test "Call function with a . in its name":
+    let a = @[1, 2, 3]
+    let b = @[2, 4, 6]
+    let df = callEval("data.frame", col1 = a, col2 = b)
+    ## TODO: fixup this test. Somehow get the correct string reperesentation for the DF
+    let exp = """
+c(1, 2, 3), c(2, 4, 6)
+"""
+    check R.makeString(df).to(string).strip == exp.strip
+
+suite "Rctx macro":
+  test "Multiple calls":
+    let x = @[5, 10, 15]
+    let y = @[2.0, 4.0, 6.0]
+
+    var df2: SEXP
+    Rctx:
+      let df = data.frame(Col1 = x, Col2 = y)
+      df2 = data.frame(Col1 = x, Col2 = y)
+
+    ## TODO: fix up this test!
+    let exp = """
+c(5, 10, 15), c(2, 4, 6)
+"""
+    check R.makeString(df).to(string).strip == exp.strip
+    check R.makeString(df2).to(string).strip == exp.strip
