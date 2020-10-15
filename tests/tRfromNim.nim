@@ -1,11 +1,11 @@
 import sequtils
-import ../rnim
+import ../src/rnim
 import unittest
 
 # Intialize the embedded R environment.
 let R = setupR()
 
-source("tests/foo.R")
+R.source("tests/foo.R")
 
 suite "Basic types from Nim to R and back":
   # Setup a call to the R function
