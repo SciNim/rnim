@@ -1,3 +1,8 @@
+* v0.1.2
+- =callEval= now works correctly with strings as function names,
+  e.g. to allow R functions with dots, =data.frame=
+- add a =Rctx= macro, which can be used for more convenient R calls
+  (see README)
 * v0.1.1
 - fix project structure to be nimble installable
 - add changelog
