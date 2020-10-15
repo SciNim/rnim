@@ -1,0 +1,10 @@
+* v0.1.1
+- fix project structure to be nimble installable
+- add changelog
+- replace impl of =source=
+* v0.1.0
+- first basic prototype supporting
+  - call R functions from Nim
+  - auto convert basic Nim types to R =SEXP=
+  - allow conversion of =SEXP= back to Nim types using =to=
+- calling Nim from R is still broken (segfaults)
