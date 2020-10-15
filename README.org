@@ -113,6 +113,31 @@ doAssert R.hello("User").to(string) == "Hello User"
 
 That covers the most basic functionality in place so far.
 
+*** =Rctx= macro
+
+As mentioned in the previous secton, some function names are weird and
+require the user to use =callEval= directly.
+
+To make calling such functions a bit nicer, there is an =Rctx= macro,
+which allows for directly calling R functions with e.g. dots in their
+names, and also allows for assignments.
+
+#+begin_src nim
+
+let x = @[5, 10, 15]
+let y = @[2.0, 4.0, 6.0]
+
+var df: SEXP
+Rctx:
+  df = data.frame(Col1 = x, Col2 = y)
+  let df2 = data.frame(Col1 = x, Col2 = y)
+  print("Hello from R")
+#+end_src
+where both =df= as well as =df2= will then store an equivalent data
+frame. The last line shows that it's also possible to use this macro
+to avoid the need to discard all R calls.
+
+
 
 ** Trying it out
 
