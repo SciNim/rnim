@@ -63,14 +63,6 @@ template PROTECT*(arg: untyped): untyped =
 template UNPROTECT*(arg: untyped): untyped =
   unprotect(arg)
 
-## Invokes the command source("foo.R").
-proc source*(name: cstring) =
-  var e: SEXP
-  e = lang2(install("source".cstring), mkString(name))
-  discard PROTECT(e)
-  discard tryEval(e, R_GlobalEnv, nil)
-  UNPROTECT(1)
-
 proc nimToR*[T](arg: T): SEXP =
   ## NOTE: Even basic types like ints and floats are represented by
   ## vectors (of size 1) in R!
@@ -190,6 +182,11 @@ macro callEval*(fn: untyped, args: varargs[untyped]): untyped =
     let ret = eval(fnCall)
     UNPROTECT(`unprotectLen`) # fn, args
     ret
+
+proc source*(R: RContext, name: string) =
+  ## Invokes the command source("foo.R").
+  doAssert R.replSetup, "Cannot source a file if the given R context isn't initialized!"
+  discard callEval(source, name)
 
 #template `()`(fn untyped, args: varargs[untyped]): untyped =
 #  call(fn, args)
