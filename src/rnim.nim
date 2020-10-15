@@ -134,8 +134,10 @@ macro call*(fn: untyped, args: varargs[untyped]): untyped =
   # TODO: copy to Nim type to be able to unprotect R?
   let fnName = block:
     var res: NimNode
-    if fn.kind == nnkIdent: res = fn.toStrLit
-    elif fn.kind == nnkAccQuoted: res = fn[0].toStrLit
+    case fn.kind
+    of nnkIdent: res = fn.toStrLit
+    of nnkStrLit: res = fn
+    of nnkAccQuoted: res = fn[0].toStrLit
     else: res = newLit fn.repr #doAssert false, "Invalid kind of func " & $(fn.kind)
     res
   var callNode = nnkCall.newTree(
