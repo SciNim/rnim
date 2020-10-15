@@ -131,11 +131,11 @@ few prerequsites:
   echo $R_HOME
   echo $LD_LIBRARY_PATH
   #+end_src
-
-  #+RESULTS:
-  : /usr/bin/R
-  : /usr/lib/R
-  : /usr/lib/R/lib
+  #+begin_src sh
+  /usr/bin/R
+  /usr/lib/R
+  /usr/lib/R/lib
+  #+end_src
 
 Then just run the test file:
 #+begin_src sh
