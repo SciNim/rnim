@@ -173,7 +173,7 @@ few prerequisites.
   structure. That is /not/ the path where the R binary lies! 
   Example setup:
   #+begin_src sh
-  where R
+  where R.dll
   set R_HOME
   #+end_src
   #+begin_src sh
