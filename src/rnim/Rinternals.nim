@@ -1,5 +1,9 @@
-const
-  libname* = "libR.so"
+when defined(Windows):
+  const
+    libname* = "R.dll"
+else:
+  const
+    libname* = "libR.so"
 
 import Rinternals_types
 

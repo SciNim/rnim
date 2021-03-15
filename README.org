@@ -141,8 +141,10 @@ to avoid the need to discard all R calls.
 
 ** Trying it out
 
+*** Setup on Linux
+
 To try out the functionality of calling R from Nim, you need to meet a
-few prerequsites:
+few prerequisites:
 - a working R installation _with_ a =libR.so= shared library
 - the shell environment variable =R_HOME= needs to be defined and has
   to point to the directory which contains the full R directory
@@ -162,7 +164,21 @@ few prerequsites:
   /usr/lib/R/lib
   #+end_src
 
-Then just run the test file:
+*** Setup on Windows
+
+On Windows you only need a working R installation _with_ a =R.dll= shared library,
+there is no need to setup =R_HOME= environment variable.
+Example check that =R.dll= is available:
+#+begin_src sh
+where R.dll
+#+end_src
+#+begin_src sh
+C:\Program Files\R\R-4.0.4\bin\x64\R.dll
+#+end_src
+
+*** Test your setup
+
+Run the test file:
 #+begin_src sh
 nim c -r tests/tRfromNim.nim
 #+end_src
