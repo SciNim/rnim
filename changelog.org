@@ -1,3 +1,6 @@
+* v0.1.3
+- fix accessing integer arrays from Nim, which makes interfacing of
+  Nim from R finally workable for simple types.
 * v0.1.2
 - =callEval= now works correctly with strings as function names,
   e.g. to allow R functions with dots, =data.frame=
