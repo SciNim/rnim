@@ -8,8 +8,9 @@ are used. Both named and unnamed function arguments are supported.
 The R =SEXP= object can be converted into all Nim types, which are
 supported in the other direction.
 
-The interfacing from R to Nim is essentially broken still. Segfaults,
-many of them... :)
+Interfacing with shared libraries written in Nim works for basic
+types. See the =tNimFromR.nim= and =tCallNimFromR.R= files for an
+example in =tests=.
 
 ** Basic syntax to call R from Nim
 
