@@ -110,6 +110,7 @@ proc nimToR*[T](arg: T): SEXP =
     s = arg
   else:
     doAssert false, "Type not impld yet " & $(typeof(T))
+  UNPROTECT(1)
   s
 
 proc setTagInList*(s: SEXP, val: SEXP, idx: int) =
