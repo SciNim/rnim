@@ -21,6 +21,10 @@ proc protect*(s: SEXP): SEXP {.cdecl, importc: "Rf_protect", dynlib: libname.}
 proc unprotect*(a: cint) {.cdecl, importc: "Rf_unprotect", dynlib: libname.}
 proc allocVector*(a: SEXPTYPE, b: R_xlen_t): SEXP {.cdecl, importc: "Rf_allocVector", dynlib: libname.}
 proc LENGTH*(x: SEXP): cint {.cdecl, importc: "LENGTH", dynlib: libname.}
+proc INTEGER*(x: SEXP): ptr cint {.cdecl, importc: "INTEGER", dynlib: libname.}
+proc REAL*(x: SEXP): ptr cdouble {.cdecl, importc: "REAL", dynlib: libname.}
+proc DATAPTR*(x: SEXP): ptr cint {.cdecl, importc: "DATAPTR", dynlib: libname.}
+proc STDVEC_DATAPTR*(x: SEXP): ptr cint {.cdecl, importc: "STDVEC_DATAPTR", dynlib: libname.}
 proc setAttrib*(a, b, c: SEXP): SEXP {.cdecl, importc: "Rf_setAttrib", dynlib: libname.}
 proc isInteger*(s: SEXP): Rboolean {.cdecl, importc: "Rf_isInteger", dynlib: libname.}
 proc cons*(a, b: SEXP): SEXP {.cdecl, importc: "Rf_cons", dynlib: libname.}
@@ -30,20 +34,6 @@ template LISTVAL*(x: untyped): untyped = x.u.listsxp
 template TAG*(x: untyped): untyped = x.u.listsxp.tagval
 template CAR0*(x: untyped): untyped = x.u.listsxp.carval
 template CDR*(x: untyped): untyped = x.u.listsxp.cdrval
-
-template DATAPTR*(x: untyped): untyped =
-  ## TODO: why are we off by 8 byte?
-  cast[ptr SEXPREC_ALIGN](cast[ByteAddress](x) + 1 * sizeof(x[]) - 1 * 8)
-
-template INTEGER*(x: untyped): untyped =
-  cast[ptr cint](DATAPTR(x))
-
-template REAL*(x: untyped): untyped =
-  cast[ptr cdouble](DATAPTR(x))
-
-template STDVEC_DATAPTR*(x: untyped): untyped =
-  #define STDVEC_DATAPTR(x) ((void *) (((SEXPREC_ALIGN *) (x)) + 1))
-  cast[pointer](cast[ptr SEXPREC_ALIGN](cast[ByteAddress](x) + 1 * sizeof(x[]) - 1 * 8))
 
 template STRING_PTR*(x: untyped): untyped =
   #define STRING_PTR(x)	((SEXP *) DATAPTR(x))
