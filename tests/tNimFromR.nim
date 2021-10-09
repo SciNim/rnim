@@ -1,13 +1,41 @@
-import ../rnim
+import ../src/rnim
 
-proc addXY*(x, y: SEXP): SEXP {.exportc: "addXY", cdecl, dynlib.} =
+#[
+Compile this with
+
+nim c --app:lib --gc:arc tNimFromR.nim
+
+and then run the corresponding R test:
+
+Rscript tCallNimFromR.R
+
+If it doesn't throw an error the tests passed.
+
+(ARC is optional)
+]#
+
+proc addXYInt*(x, y: SEXP): SEXP {.exportc: "addXYInt", cdecl, dynlib.} =
+  # assuming x, y are ints
+  let
+    xNim = x.to(int)
+    yNim = y.to(int)
+  result = nimToR(xNim + yNim)
+
+proc addXYFloat*(x, y: SEXP): SEXP {.exportc: "addXYFloat", cdecl, dynlib.} =
   # assuming x, y are floats
   let
     xNim = x.to(float)
     yNim = y.to(float)
   result = nimToR(xNim + yNim)
 
-
+proc addVecs*(x, y: SEXP): SEXP {.exportc: "addVecs", cdecl, dynlib.} =
+  let
+    xNim = x.to(seq[float])
+    yNim = y.to(seq[float])
+  var res = newSeq[float](xNim.len)
+  for i in 0 ..< xNim.len:
+    res[i] = (xNim[i] + yNim[i]).float
+  result = nimToR(res)
 
 #[
 I think the below is only relevant for complicated modules
