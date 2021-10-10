@@ -181,10 +181,15 @@ nim c (-d:danger) --app:lib (--gc:arc) myRModule.nim
 where the =danger= and =ARC= usage are of course optional (but ARC/ORC
 is recommended).
 
-This will generate a =libmyRmodule.so=, which we now have to load in
-an R file:
+This will generate a =libmyRmodule.so=. The resulting shared library
+in principle needs to be manually loaded via =dyn.load= in R and each
+procedure in it needs to be called using the =.Call= interface.
 
-=myRwrapper.R=:
+Fortunately, this can be automated easily. Therefore, when compiling
+such a shared library, we automatically emit an R wrapper, that has
+the same name as the input Nim file. So the following file is generated:
+
+=myRmodule.R=:
 #+begin_src R
 dyn.load("libmyRmodule.so")
 
@@ -193,8 +198,9 @@ addNumbers <- function(a, b) {
 }
 #+end_src
 
-This file can now be sourced from the R interpreter or in an R script
-and then =addNumbers= is usable and will execute the compiled Nim code!
+This file can now be sourced from the R interpreter (using the
+=source= function) or in an R script and then =addNumbers= is usable
+and will execute the compiled Nim code!
 
 ** Trying it out
 
