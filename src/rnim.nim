@@ -111,7 +111,7 @@ proc nimToR*[T](arg: T): SEXP =
     s = allocVector(INTSXP, arg.len.cint)
     discard PROTECT(s)
     when sizeof(getInnerType(T)) == sizeof(cint):
-      copyMem(INTEGER(s), arg[0].unsafeaddr, arg.len * sizeof(cint))
+      copyMem(INTEGER(s), arg[0].unsafeAddr, arg.len * sizeof(cint))
     else:
       # copy manually and convert to `cint`
       var buf = cast[ptr UncheckedArray[cint]](INTEGER(s))
@@ -128,7 +128,7 @@ proc nimToR*[T](arg: T): SEXP =
     s = allocVector(REALSXP, arg.len.cint)
     discard PROTECT(s)
     when sizeof(getInnerType(T)) == sizeof(cdouble):
-      copyMem(REAL(s), arg[0].unsafeaddr, arg.len * sizeof(cdouble))
+      copyMem(REAL(s), arg[0].unsafeAddr, arg.len * sizeof(cdouble))
     else:
       var buf = cast[ptr UncheckedArray[cdouble]](REAL(s))
       for i in 0 ..< arg.len:
@@ -310,7 +310,7 @@ macro Rctx*(body: untyped): untyped =
 proc setupR*(): RContext =
   const r_argc = 2;
   let r_argv = ["R".cstring, "--silent".cstring]
-  discard Rf_initEmbeddedR(r_argc, r_argv[0].unsafeaddr)
+  discard Rf_initEmbeddedR(r_argc, r_argv[0].unsafeAddr)
   when defined(gcDestructors):
     result = new RContext
   else:
