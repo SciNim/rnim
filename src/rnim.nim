@@ -7,7 +7,6 @@ type
     replSetup: bool
   RContext* = ref RcontextObj
 
-
 when defined(gcDestructors):
   proc teardown*(ctx: var RContextObj)
   proc `=destroy`(x: var RContextObj) =
@@ -44,6 +43,28 @@ macro getInnerType(TT: typed): untyped =
   # assign symbol to result
   result = quote do:
     `res`
+
+macro exportR*(fn: untyped): untyped =
+  ## Rewrites the pragmas to be correct for export to R.
+  ##
+  ## This means attaching the following 3 pragmas:
+  ## 1. `exportc` with the name of the Nim procedure to be used
+  ## 2. `cdecl` for calling convention
+  ## 3. `dynlib` to export it to the shared library
+  # 0. check it's actually a procedure
+  if fn.kind notin {nnkProcDef, nnkFuncDef}:
+    error("The {.exportR.} pragma currently may only be used on procedures!")
+  # 1. get name of the procedure
+  let name = fn.name
+  echo name.treeRepr
+  # 2. generate the nnkPragma node
+  let prag = nnkPragma.newTree(
+    nnkExprColonExpr.newTree(ident"exportc", name.toStrLit),
+    ident"cdecl", ident"dynlib"
+  )
+  # (TODO: 3. add procedure to procedures to generate an R wrapper file for
+  result = fn
+  result.pragma = prag
 
 ## R assignment operators
 ## Note: these can only use already defined variables. So you cannot
