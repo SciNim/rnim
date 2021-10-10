@@ -1,11 +1,15 @@
-import rnim / [Rinternals, Rembedded, Rinternals_types, Rext]
-export RInternals, Rembedded, Rinternals_types, Rext
-import macros
+import rnim / [Rinternals, Rembedded, Rinternals_types, Rext, auto_wrapper]
+export RInternals, Rembedded, Rinternals_types, Rext, auto_wrapper
+import macros, tables, os
 
 type
   RContextObj = object
     replSetup: bool
   RContext* = ref RcontextObj
+
+## Our global CT variable that stores all information to auto serialize the
+## Nim exported procedures to a corresponding R wrapper.
+var moduleTable {.compileTime.} = initTable[string, NimRModule]()
 
 when defined(gcDestructors):
   proc teardown*(ctx: var RContextObj)
@@ -44,6 +48,17 @@ macro getInnerType(TT: typed): untyped =
   result = quote do:
     `res`
 
+proc assignToCtTable(fn, name, params: NimNode) =
+  ## Assigns the given procedure to the CT table and serializes an R file
+  ## from the procedures
+  ## TODO: Should we use the full path to always emit next to the Nim file or always
+  ## local?
+  let (_, filename, _) = fn.lineInfoObj.filename.extractFilename.splitFile
+  var pt = moduleTable.getOrDefault(filename, NimRModule(file: filename))
+  pt.add(name, params)
+  pt.serialize()
+  moduleTable[filename] = pt
+
 macro exportR*(fn: untyped): untyped =
   ## Rewrites the pragmas to be correct for export to R.
   ##
@@ -56,15 +71,16 @@ macro exportR*(fn: untyped): untyped =
     error("The {.exportR.} pragma currently may only be used on procedures!")
   # 1. get name of the procedure
   let name = fn.name
-  echo name.treeRepr
   # 2. generate the nnkPragma node
   let prag = nnkPragma.newTree(
     nnkExprColonExpr.newTree(ident"exportc", name.toStrLit),
     ident"cdecl", ident"dynlib"
   )
-  # (TODO: 3. add procedure to procedures to generate an R wrapper file for
+  # 3. return the modified procedure with correct parameters
   result = fn
   result.pragma = prag
+  # 4. add result to proc table to generate an R wrapper for it
+  fn.assignToCtTable(result.name, result.params)
 
 ## R assignment operators
 ## Note: these can only use already defined variables. So you cannot
