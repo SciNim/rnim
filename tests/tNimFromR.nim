@@ -14,21 +14,21 @@ If it doesn't throw an error the tests passed.
 (ARC is optional)
 ]#
 
-proc addXYInt*(x, y: SEXP): SEXP {.exportc: "addXYInt", cdecl, dynlib.} =
+func addXYInt*(x, y: SEXP): SEXP {.exportR.} =
   # assuming x, y are ints
   let
     xNim = x.to(int)
     yNim = y.to(int)
   result = nimToR(xNim + yNim)
 
-proc addXYFloat*(x, y: SEXP): SEXP {.exportc: "addXYFloat", cdecl, dynlib.} =
+proc addXYFloat*(x, y: SEXP): SEXP {.exportR.} =
   # assuming x, y are floats
   let
     xNim = x.to(float)
     yNim = y.to(float)
   result = nimToR(xNim + yNim)
 
-proc addVecs*(x, y: SEXP): SEXP {.exportc: "addVecs", cdecl, dynlib.} =
+proc addVecs*(x, y: SEXP): SEXP {.exportR.} =
   let
     xNim = x.to(seq[float])
     yNim = y.to(seq[float])
