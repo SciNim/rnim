@@ -14,7 +14,7 @@ If it doesn't throw an error the tests passed.
 (ARC is optional)
 ]#
 
-func addXYInt*(x, y: SEXP): SEXP {.exportR.} =
+func addXYInt*(x: SEXP, y: SEXP): SEXP {.exportR.} =
   # assuming x, y are ints
   let
     xNim = x.to(int)
