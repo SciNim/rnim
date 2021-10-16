@@ -121,6 +121,16 @@ proc initNumericVector*[T](s: SEXP): NumericVector[T] =
   else:
     raiseException(ValueError, "Cannot store SEXP of type " & $s.sxpinfo.type & " as a `NumericVector`!")
 
+proc toRawVector*[T](x: openArray[T]): RawVector[T] =
+  ## Convenience helper, which auto converts a Nim sequence / array to a RawVector
+  let xR = x.nimToR
+  result = initRawVector[T](xR)
+
+proc toNumericVector*[T](x: openArray[T]): NumericVector[T] =
+  ## Convenience helper, which auto converts a Nim sequence / array to a NumericVector
+  let xR = x.nimToR
+  result = initNumericVector[T](xR)
+
 proc `[]`*[T](v: RawVector[T], idx: int): T =
   ## Returns the element at index `idx` from the vector `v`
   when compileOption("boundChecks"):
