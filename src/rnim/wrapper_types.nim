@@ -183,3 +183,36 @@ iterator pairs*[T](v: NumericVector[T]): (int, T) =
 iterator mpairs*[T](v: var RawVector[T]): (int, var T) =
   for i in 0 .. v.high:
     yield (i, v[i])
+
+proc `==`*[T](v, w: RawVector[T]): bool =
+  if v.len != w.len: return false
+  for i in 0 ..< v.len:
+    if v[i] != w[i]: return false
+  result = true
+
+proc `==`*[T](v, w: NumericVector[T]): bool =
+  if v.len != w.len: return false
+  for i in 0 ..< v.len:
+    if v[i] != w[i]: return false
+  result = true
+
+proc `$`*[T](v: RawVector[T]): string =
+  result = "RawVector[" & $typeof(T) & "](len: "
+  result.add $v.len & ", data: ["
+  for i, x in v:
+    if i == v.high:
+      result.add $v[i] & "]"
+    else:
+      result.add $v[i] & ", "
+  result.add ")"
+
+proc `$`*[T](v: NumericVector[T]): string =
+  result = "NumericVector[" & $typeof(T) & "](len: "
+  result.add $v.len & ", kind: "
+  result.add $v.kind & ", data: ["
+  for i, x in v:
+    if i == v.high:
+      result.add $v[i] & "]"
+    else:
+      result.add $v[i] & ", "
+  result.add ")"
