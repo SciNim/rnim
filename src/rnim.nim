@@ -8,6 +8,7 @@ type
   RContext* = ref RcontextObj
 
 when defined(gcDestructors):
+  # TODO: can we merge these with the branch below now?
   proc teardown*(ctx: var RContextObj)
   proc `=destroy`(x: var RContextObj) =
     ## tear down the R repl, if it's up
