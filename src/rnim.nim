@@ -1,15 +1,11 @@
-import rnim / [Rinternals, Rembedded, Rinternals_types, Rext, auto_wrapper]
-export RInternals, Rembedded, Rinternals_types, Rext, auto_wrapper
-import macros, tables, os
+import rnim / [Rinternals, Rembedded, Rinternals_types, Rext, auto_wrapper, wrapper_types, macro_utils]
+export RInternals, Rembedded, Rinternals_types, Rext, auto_wrapper, wrapper_types
+import macros, os
 
 type
   RContextObj = object
     replSetup: bool
   RContext* = ref RcontextObj
-
-## Our global CT variable that stores all information to auto serialize the
-## Nim exported procedures to a corresponding R wrapper.
-var moduleTable {.compileTime.} = initTable[string, NimRModule]()
 
 when defined(gcDestructors):
   proc teardown*(ctx: var RContextObj)
@@ -25,18 +21,6 @@ else:
     ## called in due time. Probably better to manually tear down R?
     if x.replSetup:
       teardown(x)
-
-
-proc assignToCtTable(fn, name, params: NimNode) =
-  ## Assigns the given procedure to the CT table and serializes an R file
-  ## from the procedures
-  ## TODO: Should we use the full path to always emit next to the Nim file or always
-  ## local?
-  let (_, filename, _) = fn.lineInfoObj.filename.extractFilename.splitFile
-  var pt = moduleTable.getOrDefault(filename, NimRModule(file: filename))
-  pt.add(name, params)
-  pt.serialize()
-  moduleTable[filename] = pt
 
 macro exportR*(fn: untyped): untyped =
   ## Rewrites the pragmas to be correct for export to R.
@@ -55,11 +39,22 @@ macro exportR*(fn: untyped): untyped =
     nnkExprColonExpr.newTree(ident"exportc", name.toStrLit),
     ident"cdecl", ident"dynlib"
   )
-  # 3. return the modified procedure with correct parameters
-  result = fn
-  result.pragma = prag
+
+  # 3. fix up parameters and body
+  var expProc = ExportProc(name: name.toStrLit.strVal,
+                           origFn: fn,
+                           body: fn.body,
+                           params: fn.params)
+  expProc = fixUpExportProc(expProc)
+
   # 4. add result to proc table to generate an R wrapper for it
-  fn.assignToCtTable(result.name, result.params)
+  expProc.assignToCtTable()
+
+  # 5. return the modified procedure with correct parameters
+  result = fn
+  result.body = expProc.body
+  result.params = expProc.params
+  result.pragma = prag
 
 ## R assignment operators
 ## Note: these can only use already defined variables. So you cannot
