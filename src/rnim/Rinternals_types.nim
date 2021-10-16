@@ -117,6 +117,8 @@ import strformat
 proc TYPEOF*(s: SEXP): SEXPTYPE = s.sxpinfo.type
 proc isNilSxp*(s: SEXP): bool = s.TYPEOF == NILSXP
 
+let NilValue* {.importc: "R_NilValue"}: SEXP
+
 proc `$`*(s: SEXP): string
 proc toStr*(s: SEXP): string =
   case TYPEOF(s)

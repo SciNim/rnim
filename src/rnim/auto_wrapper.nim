@@ -1,4 +1,4 @@
-import macros, strutils, os
+import macros, strutils, os, tables
 
 type
   ExportProc* = object
@@ -29,6 +29,25 @@ const voidBody = """
     invisible(.Call("$name", $args))
 """
 
+## Handy identifiers for a bit more clarity
+let SEXPIdent {.compileTime.} = ident"SEXP"
+let ResIdent  {.compileTime.} = ident"result"
+let NilIdent  {.compileTime.} = ident"NilValue"
+
+## Our global CT variable that stores all information to auto serialize the
+## Nim exported procedures to a corresponding R wrapper.
+var moduleTable {.compileTime.} = initTable[string, NimRModule]()
+
+proc fixUpExportProc*(fn: ExportProc): ExportProc =
+  ## Given a procedure, apply the necessary changes to the parameters and body
+  # check if return type is void, in that case
+  result = fn
+  result.isVoid = result.params[0].kind == nnkEmpty
+  if result.isVoid:
+    # fix up the parameters and body
+    result.params[0] = SEXPIdent
+    result.body.add nnkAsgn.newTree(ResIdent, NilIdent)
+
 proc argsToSeq*(expProc: ExportProc): seq[string] =
   let params = expProc.origFn.params
   result = newSeq[string]()
@@ -56,8 +75,13 @@ proc serialize*(pt: NimRModule) {.compileTime.} =
                       "body", body]
   writeFile(pt.file & ".R", res)
 
-proc add*(pt: var NimRModule, expProc: ExportProc) =
-  ## Adds the given name and parameters to the proc table
-  ## TODO: here we can add support for native Nim types & the wrapping in R code by
-  ## checking the 2nd to last child of each nnkIdentDefs & 0th child of nnkFormalParams
-  pt.procs.add expProc
+proc assignToCtTable*(expProc: ExportProc) =
+  ## Assigns the given procedure to the CT table and serializes an R file
+  ## from the procedures
+  ## TODO: Should we use the full path to always emit next to the Nim file or always
+  ## local?
+  let (_, filename, _) = expProc.origFn.lineInfoObj.filename.extractFilename.splitFile
+  var pt = moduleTable.getOrDefault(filename, NimRModule(file: filename))
+  pt.procs.add(expProc)
+  pt.serialize()
+  moduleTable[filename] = pt
