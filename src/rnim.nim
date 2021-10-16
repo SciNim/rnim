@@ -80,7 +80,7 @@ proc nimToR*[T](arg: T): SEXP =
   ## vectors (of size 1) in R!
   ## TODO: make this a bit more concise?
   var s: SEXP
-  when T is seq[int8|int16|int32|uint8|uint16]:
+  when T is seq[int8|int16|int32|uint8|uint16] | openArray[int8|int16|int32|uint8|uint16]:
     # TODO: broken for types not matching in size to cint!
     ## NOTE: native 64 bit integers are not supported!
     s = allocVector(INTSXP, arg.len.cint)
@@ -92,14 +92,14 @@ proc nimToR*[T](arg: T): SEXP =
       var buf = cast[ptr UncheckedArray[cint]](INTEGER(s))
       for i in 0 ..< arg.len:
         buf[i] = arg[i].cint
-  elif T is seq[uint32|int|int64|uint64]:
+  elif T is seq[uint32|int|int64|uint64] | openArray[uint32|int|int64|uint64]:
     # have to be handled as floats
     s = allocVector(REALSXP, arg.len.cint)
     discard PROTECT(s)
     var buf = cast[ptr UncheckedArray[cdouble]](REAL(s))
     for i in 0 ..< arg.len:
       buf[i] = arg[i].cdouble
-  elif T is seq[float|float32|float64]:
+  elif T is seq[float|float32|float64] | openArray[float|float32|float64]:
     s = allocVector(REALSXP, arg.len.cint)
     discard PROTECT(s)
     when sizeof(getInnerType(T)) == sizeof(cdouble):
