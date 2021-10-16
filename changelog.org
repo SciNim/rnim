@@ -1,3 +1,11 @@
+* v0.1.5
+- handle Nim procedures that return void when using
+  ={.exportR.}=. This is done by rewriting to a =SEXP= return type,
+  returning the =R_NilValue= and wrapping in =invisible= on the R
+  side.
+- add =NumericVector= and =RawVector=. These are two numerical vector
+  types that allow access to R data arrays without copying the
+  data. See the README for more on it.
 * v0.1.4
 - add ={.exportR.}= pragma, which takes care of attaching the correct
   pragmas to export to a shared library usable in R
