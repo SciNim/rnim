@@ -114,6 +114,99 @@ doAssert R.hello("User").to(string) == "Hello User"
 
 That covers the most basic functionality in place so far.
 
+*** Vectors (data arrays)
+
+Arrays are always a special case, as they are usually the main source
+of computational work. Avoiding unnecessary copies of arrays is
+important to keep performance high.
+
+To provide a no-copy interface to data arrays (R vectors) from R,
+there are two types to help: =NumericVector[T]= and =RawVector[T]=.
+They provide a nice Nim interface to work with such numerical data.
+
+Any R =SEXP= can be converted to either of these two types. If the
+corresponding =SEXP= does *not* correspond to a vector, an exception
+will be thrown at runtime.
+
+These types internally simply keep a copy of the underlying data array
+in the =SEXP=.
+
+From a usability standpoint =NumericVector[T]= is the main type that
+should be used. =RawVector[T]= simply provides a *slightly* lower
+wrapper, which is however more restrictive.
+
+A =RawVector[T]= can only be constructed for: =cint, int32, float,
+cdouble=. This is because the underlying R =SEXP= come only in two
+types: =INTSXP= and =REALSXP=, the former stores 32-bit integers and
+the latter 64-bit floats (technically afaik the platform specific
+size, so 32-bit floats on a 32-bit machine. The inverse is *not* the
+case for =INTSXP= though!). There is no way to treat a =REALSXP=
+vector as a =RawVector[int32]= for instance.
+
+This is where =NumericVector[T]= comes in. It can be constructed for
+all numerical types larger or equal to 32-bit in size (to avoid loss
+of information when constructing *from* a =SEXP=). Unsigned integers
+so far are also not supported.
+
+A short example:
+#+begin_src nim :tangle /tmp/readme_numericvector.nim
+import rnim
+let R = setupR()
+
+let x = @[1, 2, 3]
+let xR: SEXP = x.nimToR # types for clarity
+var nv = initNumericVector[int](xR)
+# `nv` is now a vector pointing to the same data as `xR`
+# we can access individual elements:
+echo nv[1] # 2
+# modify elements:
+nv[2] = 5
+# check its length
+doAssert nv.len == 3
+# iterate over it
+for i in 0 .. nv.high:
+  echo nv[i]
+for x in nv:
+  echo x
+for i, x in nv:
+  echo "Index ", i, " contains ", x
+# compare them:
+doAssert nv == nv
+# and print them:
+echo nv # NumericVector[int](len: 3, kind: vkFloat, data: [1, 2, 5])
+# as `xR` contains the same memory location, constructing another vector
+# and comparing them yields `true`, even though we modified `nv`
+let nv2 = initNumericVector[int](xR)
+doAssert nv == nv2
+# finally we can also construct a `NumericVector` straight from a Nim sequence
+let nv3 = @[1.5, 2.5, 3.5].toNumericVector()
+echo nv3
+#+end_src
+
+If you ran this code you will see a message:
+#+begin_src
+Interpreting input vector of type `REALSXP` as int loses information!
+#+end_src
+
+This is because we first constructed a =SEXP= from a 64-bit integer
+sequence in Nim. As mentioned before, 64-bit integers do not
+exist. Therefore, the =xR SEXP= above is actually stored in a
+=REALSXP=. By constructing a =NumericVector[int]= we tell the Nim
+compiler we wish to convert from and to =int=, no matter the
+underlying type of the =SEXP= array, i.e. =INTSXP= or =REALSXP=. The
+message simply makes you aware that this is happening (it may be taken
+out in the future).
+
+The fact that this conversion happens internally is the reason for the
+existence of =RawVector=, which explicitly disallows this.
+
+Further, =NumericVector= is actually a variant object. Depending on
+the runtime type of the =SEXP= from which we construct a =SEXP= the
+correct branch of the variant object will be filled.
+For extremely performance sensitive application it may thus be
+preferable to have a type where variant kind checks and possible type
+conversions do not happen.
+
 *** =Rctx= macro
 
 As mentioned in the previous secton, some function names are weird and
