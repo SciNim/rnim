@@ -1,4 +1,5 @@
 import ../src/rnim
+import std / [sequtils, unittest]
 
 #[
 Compile this with
@@ -36,6 +37,64 @@ proc addVecs*(x, y: SEXP): SEXP {.exportR.} =
   for i in 0 ..< xNim.len:
     res[i] = (xNim[i] + yNim[i]).float
   result = nimToR(res)
+
+proc printVec*(v: SEXP) {.exportR.} =
+  let nv = initNumericVector[float](v)
+  for i in 0 .. nv.high:
+    echo nv[i]
+
+  for x in nv:
+    echo x
+
+  for i, x in nv:
+    echo "index ", i, " contains ", x
+
+proc modifyVec*(v: SEXP) {.exportR.} =
+  var nv = initRawVector[float](v)
+  for x in mitems(nv):
+    x = x + 1.0
+
+proc checkVector[T](v: NumericVector[T]) =
+  ## checks the given vector to be our expectation
+  test "Checking vector of type " & $typeof(v):
+    let exp = @[1, 2, 3, 4, 5].mapIt(it.T)
+    check v.len == exp.len
+    for i in 0 ..< v.len:
+      check v[i] == exp[i]
+
+proc checkSexp*(s: SEXP) {.exportR.} =
+  suite "NumericVector tests":
+    proc checkType[T](s: SEXP) =
+      let nv = initNumericVector[T](s)
+      checkVector(nv)
+    checkType[int32](s)
+    checkType[cint](s)
+    checkType[int](s)
+    checkType[int64](s)
+    checkType[float](s)
+    checkType[float32](s)
+    checkType[cdouble](s)
+    checkType[cfloat](s)
+    #checkType[uint8](s)
+
+proc checkVector[T](v: RawVector[T]) =
+  ## checks the given vector to be our expectation
+  test "Checking vector of type " & $typeof(v):
+    let exp = @[1, 2, 3, 4, 5].mapIt(it.T)
+    check v.len == exp.len
+    for i in 0 ..< v.len:
+      check v[i] == exp[i]
+
+proc checkSexpRaw*(s: SEXP) {.exportR.} =
+  suite "RawVector tests":
+    proc checkType[T](s: SEXP) =
+      let nv = initRawVector[T](s)
+      checkVector(nv)
+    checkType[int32](s)
+    checkType[cint](s)
+    checkType[float](s)
+    checkType[cdouble](s)
+
 
 #[
 I think the below is only relevant for complicated modules
