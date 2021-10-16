@@ -48,6 +48,35 @@ suite "Basic types from Nim to R and back":
     let testStr = "123456789abcdefghijklmnopqrstuvxyz"
     check R.makeString(testStr).to(string) == testStr
 
+suite "NumericVector from Nim seq":
+  let x = @[1.0, 2.0, 3.0, 4.0]
+  let xR = x.nimToR
+  var nv = initNumericVector[float](xR)
+  echo nv
+  test "Basic comparisons":
+    for i in 0 ..< nv.len:
+      check nv[i] == x[i]
+
+  test "Modify values":
+    for i in 0 ..< nv.len:
+      nv[i] = nv[i] * nv[i]
+
+  echo nv
+  # `xR` points to same memory as `nv`. Check they contain the same,
+  # by constructing a raw vector of `xR` (could also construct another `NumericVector` of course)
+  test "Two different vectors of same object share same memory":
+    let rv = initRawVector[float](xR)
+    let xBackNim = xR.to(seq[float])
+    for i in 0 ..< nv.len:
+      check rv[i] == nv[i]
+      check xBackNim[i] == nv[i]
+    echo rv
+    echo xR
+
+  # check comparison
+  test "Comparison":
+    check nv == nv
+
 suite "R stdlib function calls":
   test "Calls without named arguments":
     check R.sum(@[1, 2, 3]).to(int) == 6
