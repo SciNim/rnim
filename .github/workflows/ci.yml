@@ -6,12 +6,12 @@ on:
       - 'src/**'
       - 'rnim.nimble'
       - '.github/workflows/ci.yml'
-  pull_request:
-    paths:
-      - 'tests/**'
-      - 'src/**'
-      - 'rnim.nimble'
-      - '.github/workflows/ci.yml'
+  #pull_request:
+  #  paths:
+  #    - 'tests/**'
+  #    - 'src/**'
+  #    - 'rnim.nimble'
+  #    - '.github/workflows/ci.yml'
 
 jobs:
   build:
