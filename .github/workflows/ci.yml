@@ -80,6 +80,8 @@ jobs:
         shell: bash
         run: |
           cd rnim
+          # set up the R_HOME variable
+          export R_HOME=`R RHOME`
           nimble -y test
 
       - name: Run tests (Windows)
