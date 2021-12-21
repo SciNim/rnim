@@ -21,6 +21,7 @@ task test, "Run all tests":
   exec "cd tests && nim c --app:lib tNimFromR.nim"
   # call the code
   echo "Run tests calling Nim from R"
+  exec "Rscript -e 'getwd()'"
   exec "Rscript tests/tCallNimFromR.R"
 
   # and the examples
