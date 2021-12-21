@@ -195,7 +195,7 @@ macro callEval*(fn: untyped, args: varargs[untyped]): untyped =
   result = quote do:
     let fnCall = call(`fn`, `args`)
     let ret = eval(fnCall)
-    UNPROTECT(`unprotectLen`) # fn, args
+    #UNPROTECT(`unprotectLen`) # fn, args # XXX: why this not needed now???
     ret
 
 proc source*(R: RContext, name: string) =
