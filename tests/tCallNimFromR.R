@@ -1,4 +1,4 @@
-dyn.load("libtNimFromR.so")
+dyn.load("tests/libtNimFromR.so")
 
 addXYInt <- function(a, b) {
     return(.Call("addXYInt", a, b))
