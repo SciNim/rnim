@@ -240,6 +240,7 @@ returns the correct path. We can use that to set the =R_HOME=
 variable:
 #+begin_src sh
 export R_HOME=`R RHOME`
+export LD_LIBRARY_PATH=$R_HOME/lib # maybe not required on your system
 #+end_src
 
 *** Setup on Windows
