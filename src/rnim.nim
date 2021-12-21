@@ -305,7 +305,7 @@ macro Rctx*(body: untyped): untyped =
     result.add makeValidRCall(arg, true)
 
 proc setupR*(): RContext =
-  const r_argc = 2;
+  const r_argc = 3
   let r_argv = ["R".cstring, "--silent".cstring, "--no-save".cstring]
   discard Rf_initEmbeddedR(r_argc, r_argv[0].unsafeAddr)
   when defined(gcDestructors):
