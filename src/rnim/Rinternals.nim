@@ -40,4 +40,5 @@ template STRING_PTR*(x: untyped): untyped =
   cast[ptr SEXP](DATAPTR(x))
 
 template CHAR*(x: untyped): untyped =
-  cast[cstring](STDVEC_DATAPTR(x))
+  #cast[cstring](STDVEC_DATAPTR(x)) # had this before. why? impl was different though
+  cast[cstring](DATAPTR(x))
