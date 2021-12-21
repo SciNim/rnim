@@ -203,9 +203,6 @@ proc source*(R: RContext, name: string) =
   doAssert R.replSetup, "Cannot source a file if the given R context isn't initialized!"
   discard callEval(source, name)
 
-#template `()`(fn untyped, args: varargs[untyped]): untyped =
-#  call(fn, args)
-
 proc copySexpToSeq[T](s: SEXP, res: var seq[T]) =
   # TODO: we can optimize this by using copyMem where memory compatible
   let length = LENGTH(s)
