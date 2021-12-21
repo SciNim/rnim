@@ -1,4 +1,4 @@
-dyn.load("libtNimFromR.so")
+dyn.load("tests/libtNimFromR.so")
 
 source('tNimFromR.R')
 
