@@ -232,6 +232,16 @@ few prerequisites.
   /usr/lib/R/lib
   #+end_src
 
+An easy way to set the =R_HOME= variable is by asking R about it:
+#+begin_src sh
+R RHOME
+#+end_src
+returns the correct path. We can use that to set the =R_HOME=
+variable:
+#+begin_src sh
+export R_HOME=`R RHOME`
+#+end_src
+
 *** Setup on Windows
 
 - a working R installation _with_ a =R.dll= shared library
