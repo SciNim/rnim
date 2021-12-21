@@ -107,8 +107,12 @@ hello <- function(name) {
 #+end_src
 From Nim we can then call it via:
 #+begin_src nim
-# first source the file
-source("foo.R")
+import rnim
+# first set up an R interpreter
+let R = setupR()
+# now source the file
+R.source("foo.R")
+# and now we can call R functions defined in the sourced file
 doAssert R.hello("User").to(string) == "Hello User"
 #+end_src
 
