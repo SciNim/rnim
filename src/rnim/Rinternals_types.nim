@@ -49,7 +49,7 @@ type
     expr*: ptr SEXPREC
     env*: ptr SEXPREC
 
-  INNER_C_UNION_Rinternals_types_69* {.bycopy.} = object {.union.}
+  INNER_C_UNION_Rinternals_types_69* {.bycopy, union.} = object
     primsxp*: primsxp_struct
     symsxp*: symsxp_struct
     listsxp*: listsxp_struct
@@ -72,7 +72,7 @@ type
     vecsxp*: vecsxp_struct
 
   VECSEXP* = ptr VECTOR_SEXPREC
-  SEXPREC_ALIGN* {.bycopy.} = object {.union.}
+  SEXPREC_ALIGN* {.bycopy, union.} = object
     s*: VECTOR_SEXPREC
     align*: cdouble
 
