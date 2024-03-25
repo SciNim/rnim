@@ -1,3 +1,6 @@
+* v0.1.6
+- fix syntax used for ~{.union.}~ pragma in wrapped R types, old
+  syntax not valid on modern Nim
 * v0.1.5
 - handle Nim procedures that return void when using
   ={.exportR.}=. This is done by rewriting to a =SEXP= return type,
