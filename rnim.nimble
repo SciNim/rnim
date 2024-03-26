@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.5"
+version       = "0.1.6"
 author        = "Vindaar"
 description   = "A library to interface between Nim and R"
 license       = "MIT"
