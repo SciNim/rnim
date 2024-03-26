@@ -299,6 +299,11 @@ This file can now be sourced from the R interpreter (using the
 =source= function) or in an R script and then =addNumbers= is usable
 and will execute the compiled Nim code!
 
+Note that the autogeneration logic assumes the shared library and the
+generated R script will live in the same directory. If you wish to
+move one, you might have to adjust the paths that perform the
+~dyn.load~ command!
+
 ** Trying it out
 
 To try out the functionality of calling R from Nim, you need to meet a
