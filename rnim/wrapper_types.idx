@@ -1,0 +1,31 @@
+nimTitle	wrapper_types	rnim/wrapper_types.html	module rnim/wrapper_types		0
+nim	RawVector	rnim/wrapper_types.html#RawVector	object RawVector		11
+nim	NumericVector	rnim/wrapper_types.html#NumericVector	object NumericVector		20
+nim	high	rnim/wrapper_types.html#high,NumericVector[T]	proc high[T](v: NumericVector[T]): int		56
+nim	high	rnim/wrapper_types.html#high,RawVector[T]	proc high[T](v: RawVector[T]): int		57
+nim	initRawVector	rnim/wrapper_types.html#initRawVector,SEXP	proc initRawVector[T](s: SEXP): RawVector[T]		59
+nim	initNumericVector	rnim/wrapper_types.html#initNumericVector,SEXP	proc initNumericVector[T](s: SEXP): NumericVector[T]		76
+nim	toRawVector	rnim/wrapper_types.html#toRawVector,openArray[T]	proc toRawVector[T](x: openArray[T]): RawVector[T]		124
+nim	toNumericVector	rnim/wrapper_types.html#toNumericVector,openArray[T]	proc toNumericVector[T](x: openArray[T]): NumericVector[T]		129
+nim	`[]`	rnim/wrapper_types.html#[],RawVector[T],int	proc `[]`[T](v: RawVector[T]; idx: int): T		134
+nim	`[]`	rnim/wrapper_types.html#[],NumericVector[T],int	proc `[]`[T](v: NumericVector[T]; idx: int): T		141
+nim	`[]`	rnim/wrapper_types.html#[],RawVector[T],int_2	proc `[]`[T](v: var RawVector[T]; idx: int): var T		150
+nim	`[]=`	rnim/wrapper_types.html#[]=,RawVector[T],int,T	proc `[]=`[T](v: var RawVector[T]; idx: int; val: T)		157
+nim	`[]=`	rnim/wrapper_types.html#[]=,NumericVector[T],int,T	proc `[]=`[T](v: var NumericVector[T]; idx: int; val: T)		164
+nim	items	rnim/wrapper_types.html#items.i,RawVector[T]	iterator items[T](v: RawVector[T]): T		173
+nim	items	rnim/wrapper_types.html#items.i,NumericVector[T]	iterator items[T](v: NumericVector[T]): T		177
+nim	mitems	rnim/wrapper_types.html#mitems.i,RawVector[T]	iterator mitems[T](v: var RawVector[T]): var T		181
+nim	pairs	rnim/wrapper_types.html#pairs.i,RawVector[T]	iterator pairs[T](v: RawVector[T]): (int, T)		185
+nim	pairs	rnim/wrapper_types.html#pairs.i,NumericVector[T]	iterator pairs[T](v: NumericVector[T]): (int, T)		189
+nim	mpairs	rnim/wrapper_types.html#mpairs.i,RawVector[T]	iterator mpairs[T](v: var RawVector[T]): (int, var T)		193
+nim	`==`	rnim/wrapper_types.html#==,RawVector[T],RawVector[T]	proc `==`[T](v, w: RawVector[T]): bool		197
+nim	`==`	rnim/wrapper_types.html#==,NumericVector[T],NumericVector[T]	proc `==`[T](v, w: NumericVector[T]): bool		203
+nim	`$`	rnim/wrapper_types.html#$,RawVector[T]	proc `$`[T](v: RawVector[T]): string		209
+nim	`$`	rnim/wrapper_types.html#$,NumericVector[T]	proc `$`[T](v: NumericVector[T]): string		219
+nimgrp	$	rnim/wrapper_types.html#$-procs-all	proc		209
+nimgrp	high	rnim/wrapper_types.html#high-procs-all	proc		56
+nimgrp	[]=	rnim/wrapper_types.html#[]=-procs-all	proc		157
+nimgrp	==	rnim/wrapper_types.html#==-procs-all	proc		197
+nimgrp	[]	rnim/wrapper_types.html#[]-procs-all	proc		134
+nimgrp	pairs	rnim/wrapper_types.html#pairs-iterators-all	iterator		185
+nimgrp	items	rnim/wrapper_types.html#items-iterators-all	iterator		173

@@ -1,0 +1,30 @@
+nimTitle	Rinternals	rnim/Rinternals.html	module rnim/Rinternals		0
+nim	libname	rnim/Rinternals.html#libname	const libname		6
+nim	R_GlobalEnv	rnim/Rinternals.html#R_GlobalEnv	var R_GlobalEnv		10
+nim	lang1	rnim/Rinternals.html#lang1,SEXP	proc lang1(a: SEXP): SEXP		11
+nim	lang2	rnim/Rinternals.html#lang2,SEXP,SEXP	proc lang2(a, b: SEXP): SEXP		12
+nim	lang3	rnim/Rinternals.html#lang3,SEXP,SEXP,SEXP	proc lang3(a, b, c: SEXP): SEXP		13
+nim	lang4	rnim/Rinternals.html#lang4,SEXP,SEXP,SEXP,SEXP	proc lang4(a, b, c, d: SEXP): SEXP		14
+nim	lang5	rnim/Rinternals.html#lang5,SEXP,SEXP,SEXP,SEXP,SEXP	proc lang5(a, b, c, d, e: SEXP): SEXP		15
+nim	lang6	rnim/Rinternals.html#lang6,SEXP,SEXP,SEXP,SEXP,SEXP,SEXP	proc lang6(a, b, c, d, e, f: SEXP): SEXP		16
+nim	install	rnim/Rinternals.html#install,cstring	proc install(a: cstring): SEXP		17
+nim	mkString	rnim/Rinternals.html#mkString,cstring	proc mkString(a: cstring): SEXP		18
+nim	tryEval	rnim/Rinternals.html#tryEval,SEXP,SEXP,ptr.cint	proc tryEval(a, b: SEXP; c: ptr cint): SEXP		19
+nim	protect	rnim/Rinternals.html#protect,SEXP	proc protect(s: SEXP): SEXP		20
+nim	unprotect	rnim/Rinternals.html#unprotect,cint	proc unprotect(a: cint)		21
+nim	allocVector	rnim/Rinternals.html#allocVector,SEXPTYPE,R_xlen_t	proc allocVector(a: SEXPTYPE; b: R_xlen_t): SEXP		22
+nim	LENGTH	rnim/Rinternals.html#LENGTH,SEXP	proc LENGTH(x: SEXP): cint		23
+nim	INTEGER	rnim/Rinternals.html#INTEGER,SEXP	proc INTEGER(x: SEXP): ptr cint		24
+nim	REAL	rnim/Rinternals.html#REAL,SEXP	proc REAL(x: SEXP): ptr cdouble		25
+nim	DATAPTR	rnim/Rinternals.html#DATAPTR,SEXP	proc DATAPTR(x: SEXP): ptr cint		26
+nim	STDVEC_DATAPTR	rnim/Rinternals.html#STDVEC_DATAPTR,SEXP	proc STDVEC_DATAPTR(x: SEXP): ptr cint		27
+nim	setAttrib	rnim/Rinternals.html#setAttrib,SEXP,SEXP,SEXP	proc setAttrib(a, b, c: SEXP): SEXP		28
+nim	isInteger	rnim/Rinternals.html#isInteger,SEXP	proc isInteger(s: SEXP): Rboolean		29
+nim	cons	rnim/Rinternals.html#cons,SEXP,SEXP	proc cons(a, b: SEXP): SEXP		30
+nim	SET_TAG	rnim/Rinternals.html#SET_TAG,SEXP,SEXP	proc SET_TAG(x, y: SEXP)		31
+nim	LISTVAL	rnim/Rinternals.html#LISTVAL.t,untyped	template LISTVAL(x: untyped): untyped		33
+nim	TAG	rnim/Rinternals.html#TAG.t,untyped	template TAG(x: untyped): untyped		34
+nim	CAR0	rnim/Rinternals.html#CAR0.t,untyped	template CAR0(x: untyped): untyped		35
+nim	CDR	rnim/Rinternals.html#CDR.t,untyped	template CDR(x: untyped): untyped		36
+nim	STRING_PTR	rnim/Rinternals.html#STRING_PTR.t,untyped	template STRING_PTR(x: untyped): untyped		38
+nim	CHAR	rnim/Rinternals.html#CHAR.t,untyped	template CHAR(x: untyped): untyped		42

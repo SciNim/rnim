@@ -1,0 +1,7 @@
+nimTitle	auto_wrapper	rnim/auto_wrapper.html	module rnim/auto_wrapper		0
+nim	ExportProc	rnim/auto_wrapper.html#ExportProc	object ExportProc		4
+nim	NimRModule	rnim/auto_wrapper.html#NimRModule	object NimRModule		11
+nim	fixUpExportProc	rnim/auto_wrapper.html#fixUpExportProc,ExportProc	proc fixUpExportProc(fn: ExportProc): ExportProc		54
+nim	argsToSeq	rnim/auto_wrapper.html#argsToSeq,ExportProc	proc argsToSeq(expProc: ExportProc): seq[string]		64
+nim	serialize	rnim/auto_wrapper.html#serialize,NimRModule	proc serialize(pt: NimRModule)		74
+nim	assignToCtTable	rnim/auto_wrapper.html#assignToCtTable,ExportProc	proc assignToCtTable(expProc: ExportProc)		95

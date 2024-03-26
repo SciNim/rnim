@@ -1,0 +1,19 @@
+nimTitle	rnim	rnim.html	module rnim		0
+nim	RContext	rnim.html#RContext	type RContext		8
+nim	teardown	rnim.html#teardown,RContextObj	proc teardown(ctx: var RContextObj)		12
+nim	exportR	rnim.html#exportR.m,untyped	macro exportR(fn: untyped): untyped		26
+nim	`<-`	rnim.html#<-.t,untyped,untyped	template `<-`(lhs, rhs: untyped): untyped		66
+nim	`->`	rnim.html#->.t,untyped,untyped	template `->`(lhs, rhs: untyped): untyped		69
+nim	PROTECT	rnim.html#PROTECT.t,untyped	template PROTECT(arg: untyped): untyped		72
+nim	UNPROTECT	rnim.html#UNPROTECT.t,untyped	template UNPROTECT(arg: untyped): untyped		75
+nim	nimToR	rnim.html#nimToR,T	proc nimToR[T](arg: T): SEXP		78
+nim	setTagInList	rnim.html#setTagInList,SEXP,SEXP,int	proc setTagInList(s: SEXP; val: SEXP; idx: int)		128
+nim	call	rnim.html#call.m,untyped,varargs[untyped]	macro call(fn: untyped; args: varargs[untyped]): untyped		140
+nim	eval	rnim.html#eval.t,SEXP	template eval(s: SEXP): untyped		187
+nim	callEval	rnim.html#callEval.m,untyped,varargs[untyped]	macro callEval(fn: untyped; args: varargs[untyped]): untyped		193
+nim	source	rnim.html#source,RContext,string	proc source(R: RContext; name: string)		201
+nim	to	rnim.html#to,SEXP,typedesc[T]	proc to[T](s: SEXP; dtype: typedesc[T]): T		233
+nim	`.()`	rnim.html#.().t,RContext,untyped,varargs[untyped]	template `.()`(ctx: RContext; fn: untyped; args: varargs[untyped]): untyped		246
+nim	Rctx	rnim.html#Rctx.m,untyped	macro Rctx(body: untyped): untyped		275
+nim	setupR	rnim.html#setupR	proc setupR(): RContext		282
+nim	withR	rnim.html#withR.t,untyped	template withR(body: untyped): untyped		309

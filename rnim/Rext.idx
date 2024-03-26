@@ -1,0 +1,19 @@
+nimTitle	Rext	rnim/Rext.html	module rnim/Rext		0
+nim	FALSE	rnim/Rext.html#FALSE	Rboolean.FALSE		5
+nim	TRUE	rnim/Rext.html#TRUE	Rboolean.TRUE		5
+nim	MAYBE	rnim/Rext.html#MAYBE	Rboolean.MAYBE		5
+nim	Rboolean	rnim/Rext.html#Rboolean	enum Rboolean		5
+nim	DL_FUNC	rnim/Rext.html#DL_FUNC	type DL_FUNC		8
+nim	R_NativePrimitiveArgType	rnim/Rext.html#R_NativePrimitiveArgType	type R_NativePrimitiveArgType		10
+nim	Rf_DotCSymbol	rnim/Rext.html#Rf_DotCSymbol	object Rf_DotCSymbol		12
+nim	Rf_DotFortranSymbol	rnim/Rext.html#Rf_DotFortranSymbol	type Rf_DotFortranSymbol		18
+nim	R_CMethodDef	rnim/Rext.html#R_CMethodDef	type R_CMethodDef		20
+nim	R_CallMethodDef	rnim/Rext.html#R_CallMethodDef	type R_CallMethodDef		21
+nim	Rf_DotExternalSymbol	rnim/Rext.html#Rf_DotExternalSymbol	type Rf_DotExternalSymbol		22
+nim	R_FortranMethodDef	rnim/Rext.html#R_FortranMethodDef	type R_FortranMethodDef		23
+nim	R_ExternalMethodDef	rnim/Rext.html#R_ExternalMethodDef	type R_ExternalMethodDef		24
+nim	Rf_DotCallSymbol	rnim/Rext.html#Rf_DotCallSymbol	object Rf_DotCallSymbol		27
+nim	HINSTANCE	rnim/Rext.html#HINSTANCE	type HINSTANCE		32
+nim	DllInfo	rnim/Rext.html#DllInfo	object DllInfo		33
+nim	R_ClassSymbol	rnim/Rext.html#R_ClassSymbol	let R_ClassSymbol		55
+nim	R_registerRoutines	rnim/Rext.html#R_registerRoutines,ptr.DllInfo,ptr.Rf_DotCSymbol,ptr.Rf_DotCallSymbol,ptr.Rf_DotCSymbol,ptr.Rf_DotCallSymbol	proc R_registerRoutines(info: ptr DllInfo; croutines: ptr R_CMethodDef;\n                   callRoutines: ptr R_CallMethodDef;\n                   fortranRoutines: ptr R_FortranMethodDef;\n                   externalRoutines: ptr R_ExternalMethodDef)		57

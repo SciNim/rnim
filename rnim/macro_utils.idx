@@ -1,0 +1,2 @@
+nimTitle	macro_utils	rnim/macro_utils.html	module rnim/macro_utils		0
+nim	getInnerType	rnim/macro_utils.html#getInnerType.m,typed	macro getInnerType(TT: typed): untyped		16

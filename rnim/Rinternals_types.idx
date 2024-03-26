@@ -1,0 +1,52 @@
+nimTitle	Rinternals_types	rnim/Rinternals_types.html	module rnim/Rinternals_types		0
+nim	sxpinfo_struct	rnim/Rinternals_types.html#sxpinfo_struct	object sxpinfo_struct		5
+nim	vecsxp_struct	rnim/Rinternals_types.html#vecsxp_struct	object vecsxp_struct		20
+nim	primsxp_struct	rnim/Rinternals_types.html#primsxp_struct	object primsxp_struct		24
+nim	symsxp_struct	rnim/Rinternals_types.html#symsxp_struct	object symsxp_struct		27
+nim	listsxp_struct	rnim/Rinternals_types.html#listsxp_struct	object listsxp_struct		32
+nim	envsxp_struct	rnim/Rinternals_types.html#envsxp_struct	object envsxp_struct		37
+nim	closxp_struct	rnim/Rinternals_types.html#closxp_struct	object closxp_struct		42
+nim	promsxp_struct	rnim/Rinternals_types.html#promsxp_struct	object promsxp_struct		47
+nim	INNER_C_UNION_Rinternals_types_69	rnim/Rinternals_types.html#INNER_C_UNION_Rinternals_types_69	object INNER_C_UNION_Rinternals_types_69		52
+nim	SEXPREC	rnim/Rinternals_types.html#SEXPREC	object SEXPREC		60
+nim	VECTOR_SEXPREC	rnim/Rinternals_types.html#VECTOR_SEXPREC	object VECTOR_SEXPREC		67
+nim	VECSEXP	rnim/Rinternals_types.html#VECSEXP	type VECSEXP		74
+nim	SEXPREC_ALIGN	rnim/Rinternals_types.html#SEXPREC_ALIGN	object SEXPREC_ALIGN		75
+nim	NILSXP	rnim/Rinternals_types.html#NILSXP	SEXPTYPE.NILSXP		79
+nim	SYMSXP	rnim/Rinternals_types.html#SYMSXP	SEXPTYPE.SYMSXP		79
+nim	LISTSXP	rnim/Rinternals_types.html#LISTSXP	SEXPTYPE.LISTSXP		79
+nim	CLOSXP	rnim/Rinternals_types.html#CLOSXP	SEXPTYPE.CLOSXP		79
+nim	ENVSXP	rnim/Rinternals_types.html#ENVSXP	SEXPTYPE.ENVSXP		79
+nim	PROMSXP	rnim/Rinternals_types.html#PROMSXP	SEXPTYPE.PROMSXP		79
+nim	LANGSXP	rnim/Rinternals_types.html#LANGSXP	SEXPTYPE.LANGSXP		79
+nim	SPECIALSXP	rnim/Rinternals_types.html#SPECIALSXP	SEXPTYPE.SPECIALSXP		79
+nim	BUILTINSXP	rnim/Rinternals_types.html#BUILTINSXP	SEXPTYPE.BUILTINSXP		79
+nim	CHARSXP	rnim/Rinternals_types.html#CHARSXP	SEXPTYPE.CHARSXP		79
+nim	LGLSXP	rnim/Rinternals_types.html#LGLSXP	SEXPTYPE.LGLSXP		79
+nim	INTSXP	rnim/Rinternals_types.html#INTSXP	SEXPTYPE.INTSXP		79
+nim	REALSXP	rnim/Rinternals_types.html#REALSXP	SEXPTYPE.REALSXP		79
+nim	CPLXSXP	rnim/Rinternals_types.html#CPLXSXP	SEXPTYPE.CPLXSXP		79
+nim	STRSXP	rnim/Rinternals_types.html#STRSXP	SEXPTYPE.STRSXP		79
+nim	DOTSXP	rnim/Rinternals_types.html#DOTSXP	SEXPTYPE.DOTSXP		79
+nim	ANYSXP	rnim/Rinternals_types.html#ANYSXP	SEXPTYPE.ANYSXP		79
+nim	VECSXP	rnim/Rinternals_types.html#VECSXP	SEXPTYPE.VECSXP		79
+nim	EXPRSXP	rnim/Rinternals_types.html#EXPRSXP	SEXPTYPE.EXPRSXP		79
+nim	BCODESXP	rnim/Rinternals_types.html#BCODESXP	SEXPTYPE.BCODESXP		79
+nim	EXTPTRSXP	rnim/Rinternals_types.html#EXTPTRSXP	SEXPTYPE.EXTPTRSXP		79
+nim	WEAKREFSXP	rnim/Rinternals_types.html#WEAKREFSXP	SEXPTYPE.WEAKREFSXP		79
+nim	RAWSXP	rnim/Rinternals_types.html#RAWSXP	SEXPTYPE.RAWSXP		79
+nim	S4SXP	rnim/Rinternals_types.html#S4SXP	SEXPTYPE.S4SXP		79
+nim	NEWSXP	rnim/Rinternals_types.html#NEWSXP	SEXPTYPE.NEWSXP		79
+nim	FREESXP	rnim/Rinternals_types.html#FREESXP	SEXPTYPE.FREESXP		79
+nim	FUNSXP	rnim/Rinternals_types.html#FUNSXP	SEXPTYPE.FUNSXP		79
+nim	SEXPTYPE	rnim/Rinternals_types.html#SEXPTYPE	enum SEXPTYPE		79
+nim	R_xlen_t	rnim/Rinternals_types.html#R_xlen_t	type R_xlen_t		109
+nim	SEXP	rnim/Rinternals_types.html#SEXP	type SEXP		111
+nim	TRUE	rnim/Rinternals_types.html#TRUE	Rboolean.TRUE		113
+nim	FALSE	rnim/Rinternals_types.html#FALSE	Rboolean.FALSE		113
+nim	Rboolean	rnim/Rinternals_types.html#Rboolean	enum Rboolean		113
+nim	TYPEOF	rnim/Rinternals_types.html#TYPEOF,SEXP	proc TYPEOF(s: SEXP): SEXPTYPE		117
+nim	isNilSxp	rnim/Rinternals_types.html#isNilSxp,SEXP	proc isNilSxp(s: SEXP): bool		118
+nim	NilValue	rnim/Rinternals_types.html#NilValue	let NilValue		120
+nim	`$`	rnim/Rinternals_types.html#$,SEXP	proc `$`(s: SEXP): string		122
+nim	toStr	rnim/Rinternals_types.html#toStr,SEXP	proc toStr(s: SEXP): string		123

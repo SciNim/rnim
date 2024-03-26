@@ -1,0 +1,16 @@
+nimTitle	Rembedded	rnim/Rembedded.html	module rnim/Rembedded		0
+nim	Rf_initEmbeddedR	rnim/Rembedded.html#Rf_initEmbeddedR,cint,ptr.cstring	proc Rf_initEmbeddedR(argc: cint; argv: ptr cstring): cint		24
+nim	Rf_endEmbeddedR	rnim/Rembedded.html#Rf_endEmbeddedR,cint	proc Rf_endEmbeddedR(fatal: cint)		26
+nim	Rf_initialize_R	rnim/Rembedded.html#Rf_initialize_R,cint,cstringArray	proc Rf_initialize_R(ac: cint; av: cstringArray): cint		32
+nim	setup_Rmainloop	rnim/Rembedded.html#setup_Rmainloop	proc setup_Rmainloop()		34
+nim	R_ReplDLLinit	rnim/Rembedded.html#R_ReplDLLinit	proc R_ReplDLLinit()		35
+nim	R_ReplDLLdo1	rnim/Rembedded.html#R_ReplDLLdo1	proc R_ReplDLLdo1(): cint		36
+nim	R_setStartTime	rnim/Rembedded.html#R_setStartTime	proc R_setStartTime()		37
+nim	R_RunExitFinalizers	rnim/Rembedded.html#R_RunExitFinalizers	proc R_RunExitFinalizers()		38
+nim	CleanEd	rnim/Rembedded.html#CleanEd	proc CleanEd()		39
+nim	Rf_KillAllDevices	rnim/Rembedded.html#Rf_KillAllDevices	proc Rf_KillAllDevices()		40
+nim	R_DirtyImage	rnim/Rembedded.html#R_DirtyImage	var R_DirtyImage		41
+nim	R_CleanTempDir	rnim/Rembedded.html#R_CleanTempDir	proc R_CleanTempDir()		43
+nim	R_TempDir	rnim/Rembedded.html#R_TempDir	var R_TempDir		44
+nim	R_SaveGlobalEnv	rnim/Rembedded.html#R_SaveGlobalEnv	proc R_SaveGlobalEnv()		46
+nim	fpu_setup	rnim/Rembedded.html#fpu_setup,Rboolean	proc fpu_setup(start: Rboolean)		60
