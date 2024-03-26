@@ -75,7 +75,7 @@ proc serialize*(pt: NimRModule) {.compileTime.} =
   ## writes an R wrapper for the exported Nim procedures based on the given
   ## procedure table
   let libName = "lib" & pt.file & ".so"
-  res = getScriptPathTmpl          # get path of autogen'd R script
+  var res = getScriptPathTmpl          # get path of autogen'd R script
   res.add adjustPathTmpl % libName # produces a `libPath` local variable
   res.add dynLoadTmpl % "libPath"  # add the dyn.load call
   res.add "\n"
