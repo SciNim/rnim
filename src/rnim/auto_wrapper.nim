@@ -12,9 +12,22 @@ type
     file*: string # file that contains these procedures
     procs*: seq[ExportProc]
 
-const dynLoadTmpl = """dyn.load("$#")"""
+const getScriptPathTmpl = """
+# Get the directory of the currently running script. We need it, because
+# if the auto generated R file is sourced from a different directory (and assuming the shared
+# library is next to the autogen'd R file) the R interpreter won't find it.
+# So we need to fix the path based on the location of the autogen'd script.
+scriptDir <- dirname(sys.frame(1)$ofile)
+# This is a bit of a hack, see:
+# https://stackoverflow.com/a/16046056https://stackoverflow.com/a/16046056
+# Otherwise we could depend on the `here` library...
+"""
+const adjustPathTmpl = """
+# Construct the path to another script in the same directory (or a subdirectory)
+libPath <- file.path(scriptDir, "$#")
+"""
+const dynLoadTmpl = """dyn.load($#)"""
 const fnTmpl = """
-
 $name <- function($args) {
   $body
 }
@@ -61,7 +74,11 @@ proc argsToSeq*(expProc: ExportProc): seq[string] =
 proc serialize*(pt: NimRModule) {.compileTime.} =
   ## writes an R wrapper for the exported Nim procedures based on the given
   ## procedure table
-  var res = dynLoadTmpl % ("lib" & pt.file & ".so")
+  let libName = "lib" & pt.file & ".so"
+  res = getScriptPathTmpl          # get path of autogen'd R script
+  res.add adjustPathTmpl % libName # produces a `libPath` local variable
+  res.add dynLoadTmpl % "libPath"  # add the dyn.load call
+  res.add "\n"
   for p in pt.procs:
     let args = p.argsToSeq.join(", ")
     let body = if p.isVoid:
@@ -78,8 +95,6 @@ proc serialize*(pt: NimRModule) {.compileTime.} =
 proc assignToCtTable*(expProc: ExportProc) =
   ## Assigns the given procedure to the CT table and serializes an R file
   ## from the procedures
-  ## TODO: Should we use the full path to always emit next to the Nim file or always
-  ## local?
   let (_, filename, _) = expProc.origFn.lineInfoObj.filename.extractFilename.splitFile
   var pt = moduleTable.getOrDefault(filename, NimRModule(file: filename))
   pt.procs.add(expProc)
