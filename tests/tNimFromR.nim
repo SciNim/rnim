@@ -56,44 +56,44 @@ proc modifyVec*(v: SEXP) {.exportR.} =
 
 proc checkVector[T](v: NumericVector[T]) =
   ## checks the given vector to be our expectation
-  test "Checking vector of type " & $typeof(v):
-    let exp = @[1, 2, 3, 4, 5].mapIt(it.T)
-    check v.len == exp.len
-    for i in 0 ..< v.len:
-      check v[i] == exp[i]
+  let exp = @[1, 2, 3, 4, 5].mapIt(it.T)
+  check v.len == exp.len
+  for i in 0 ..< v.len:
+    check v[i] == exp[i]
 
 proc checkSexp*(s: SEXP) {.exportR.} =
-  suite "NumericVector tests":
-    proc checkType[T](s: SEXP) =
-      let nv = initNumericVector[T](s)
-      checkVector(nv)
-    checkType[int32](s)
-    checkType[cint](s)
-    checkType[int](s)
-    checkType[int64](s)
-    checkType[float](s)
-    checkType[float32](s)
-    checkType[cdouble](s)
-    checkType[cfloat](s)
-    #checkType[uint8](s)
+  proc checkType[T](s: SEXP) =
+    let nv = initNumericVector[T](s)
+    checkVector(nv)
+  checkType[int32](s)
+  checkType[cint](s)
+  checkType[int](s)
+  checkType[int64](s)
+  checkType[float](s)
+  checkType[float32](s)
+  checkType[cdouble](s)
+  checkType[cfloat](s)
+  #checkType[uint8](s)
 
 proc checkVector[T](v: RawVector[T]) =
   ## checks the given vector to be our expectation
-  test "Checking vector of type " & $typeof(v):
-    let exp = @[1, 2, 3, 4, 5].mapIt(it.T)
-    check v.len == exp.len
-    for i in 0 ..< v.len:
-      check v[i] == exp[i]
+  let exp = @[1, 2, 3, 4, 5].mapIt(it.T)
+  check v.len == exp.len
+  for i in 0 ..< v.len:
+    check v[i] == exp[i]
 
 proc checkSexpRaw*(s: SEXP) {.exportR.} =
-  suite "RawVector tests":
-    proc checkType[T](s: SEXP) =
-      let nv = initRawVector[T](s)
-      checkVector(nv)
-    checkType[int32](s)
-    checkType[cint](s)
-    checkType[float](s)
-    checkType[cdouble](s)
+  proc checkType[T](s: SEXP) =
+    let nv = initRawVector[T](s)
+    checkVector(nv)
+  checkType[int32](s)
+  checkType[cint](s)
+  ## The following for example do *NOT* work, because the data type and sizes have to match for a
+  ## raw vector!
+  ## A `RawVector` is just casting the data!
+  #checkType[int](s)
+  #checkType[float](s)
+  #checkType[cdouble](s)
 
 
 #[
